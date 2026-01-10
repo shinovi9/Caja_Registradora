@@ -1,0 +1,41 @@
+cat > .gitignore << 'EOF'
+# Entorno virtual
+venv/
+.venv/
+env/
+
+# Archivos compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configuración local y secretos
+*.env
+*.ini
+*.cfg
+*.local
+
+# Logs y temporales
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Cobertura y pruebas
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+EOF
