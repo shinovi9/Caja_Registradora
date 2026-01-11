@@ -8,8 +8,9 @@ class Tasa:
         pass
     
     @staticmethod
-    def get_valor(tipo : str)-> float:
-        pass
+    def valor(tipo : str)-> float:
+        return Tasa.__tasa_Cambio[tipo]
+    
     @staticmethod
-    def get_tipo()-> tuple:
-        pass
+    def tipo()-> tuple:
+        return tuple(Tasa.__tasa_Cambio.keys())

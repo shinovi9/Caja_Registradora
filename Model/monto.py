@@ -13,7 +13,6 @@ class Monto:
     def convertir(self, tipo : str):
         pass
     
-    
     def cantidad(self) -> float:
         """_summary_
         Returns:
@@ -21,14 +20,12 @@ class Monto:
         """
         return self.__cantidad
 
-
     def tipo(self) -> str:
         """_summary_
         Returns:
             str: _description_
         """
         return self.__tipo
-    
     
     def __str__(self):
         return f"{self.__cantidad} {self.__tipo}" 
