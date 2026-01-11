@@ -11,8 +11,8 @@ class Monto:
         :param tipo: tipo de Monto
         :type tipo: str
         """
-        self.cantidad = cantidad
-        self.tipo = tipo
+        self.__cantidad = cantidad
+        self.__tipo = tipo
         
     def convertir(self, tipo : str):
         pass
