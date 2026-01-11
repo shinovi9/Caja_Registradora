@@ -2,8 +2,7 @@
 
 class Monto:
     def __init__(self, cantidad : float, tipo : str):
-        """Inicializacion del Monto
-
+        """## Inicializacion del Monto
         Args:
             cantidad (float): Tamaño del Monto
             tipo (str): Tipo de Monto . Ejemplo(CUP,USD,...)
@@ -15,11 +14,19 @@ class Monto:
         pass
     
     
-    def cantidad(self):
+    def cantidad(self) -> float:
+        """_summary_
+        Returns:
+            float: _description_
+        """
         return self.__cantidad
 
 
-    def tipo(self):
+    def tipo(self) -> str:
+        """_summary_
+        Returns:
+            str: _description_
+        """
         return self.__tipo
     
     
