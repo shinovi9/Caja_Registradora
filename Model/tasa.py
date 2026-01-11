@@ -4,7 +4,7 @@ class Tasa:
     __tasa_Cambio : dict
     
     @staticmethod
-    def __init__(self):
+    def __cargar_Data(self):
         pass
     
     @staticmethod
