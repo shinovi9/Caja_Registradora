@@ -2,14 +2,11 @@
 
 class Monto:
     def __init__(self, cantidad : float, tipo : str):
-        """
-        Docstring para __init__
-        
-        :param self: Descripción
-        :param cantidad: Cantidad del Monto
-        :type cantidad: float 
-        :param tipo: tipo de Monto
-        :type tipo: str
+        """Inicializacion del Monto
+
+        Args:
+            cantidad (float): Tamaño del Monto
+            tipo (str): Tipo de Monto . Ejemplo(CUP,USD,...)
         """
         self.__cantidad = cantidad
         self.__tipo = tipo
