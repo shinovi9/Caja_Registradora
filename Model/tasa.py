@@ -2,7 +2,7 @@
 import json
 
 class Tasa:
-    
+
     __tasa_Cambio : dict
     
     @staticmethod
