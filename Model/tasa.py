@@ -20,7 +20,7 @@ class Tasa:
     
     @staticmethod
     def valor(tipo : str)-> float:
-        """## Otener el Valor actual de una moneda en la Tasa de canbio
+        """## Obtener el Valor actual de una moneda en la Tasa de canbio
         Args:
             tipo (str): tipo de moneda
         Returns:

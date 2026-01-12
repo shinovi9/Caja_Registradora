@@ -14,7 +14,7 @@ class View:
 if __name__ == "__main__":
     """## Ejecutar el código siguiente si el archivo View está siendo probado como principal(main)
     Si la clase View va a ser ejecutado desde main.py, el código a partir de aquí no se ejecuta"""
-    print("Provando la Vista...")
+    print("Probando la Vista...")
     view = View()
     view.Mostrar_Menú()
     selección = view.Opción_Seleccionada()
