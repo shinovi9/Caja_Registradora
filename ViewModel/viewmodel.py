@@ -1,200 +1,134 @@
 #!/usr/bin/env python3
 """
 ViewModel para el sistema de Caja Registradora.
-Actúa como intermediario entre la Vista y el Modelo.
+Funciones:
+1. Conectar Vista y Modelo
+2. Recibir comandos de la Vista
+3. Formatear datos del Modelo para la Vista
 """
-#Todo: Pero el objetivo del principal del ViewModel es darle logica al View, procesar pagos es del Model porque implica logica de negocio
-#! De alguna manera tiene que llegar la informacion del view al model y viceversa
 
 from Model.monto import Monto
 from Model.tasa import Tasa
 
+
 class ViewModel:
-    """ViewModel que gestiona la lógica de procesamiento de pagos."""
+    """ViewModel que actúa como puente entre Vista y Modelo."""
     
-    def __init__(self, pago_total: float = 0.0):
+    def __init__(self, pago_total: float):
         """
-        Inicializa el ViewModel con el pago total a completar.
+        Inicializa el ViewModel.
         
         Args:
-            pago_total (float): Monto total a pagar en CUP. Debe ser mayor que 0.
-        
-        Raises:
-            ValueError: Si el pago_total no es un número positivo.
+            pago_total (float): Monto total a pagar en CUP.
         """
-        if not isinstance(pago_total, (int, float)) or pago_total <= 0:
-            raise ValueError("El pago total debe ser un número positivo")
-        
-        self.__pago_total = float(pago_total)
-        self.__total_pagado = 0.0  
-        self.__historial_pagos = []  # Lista de objetos Monto
-        self.__completado = False
     
-    def procesar_pago(self, cantidad: float, tipo_moneda: str = "CUP") -> dict:
+        self._pago_total_cup = pago_total
+        self._total_pagado_cup = 0.0
+        self._historial_montos = []  
+        self._completado = False
+    
+    def procesar_pago(self, cantidad: float, moneda: str) -> dict:
         """
-        Procesa un pago realizado por el usuario.
+        Procesa un pago desde la Vista.
         
         Args:
-            cantidad (float): Cantidad del pago.
-            tipo_moneda (str): Tipo de moneda (ej. 'CUP', 'USD').
-        
+            cantidad: Cantidad ingresada por el usuario
+            moneda: Tipo de moneda ingresada
+            
         Returns:
-            dict: Diccionario con los resultados del procesamiento:
-                - 'exito': bool - Indica si el pago fue procesado exitosamente.
-                - 'mensaje': str - Mensaje descriptivo del resultado.
-                - 'pago_convertido': float - Cantidad en CUP después de conversión.
-                - 'restante': float - Cantidad restante por pagar en CUP.
-                - 'completado': bool - Indica si el pago total ha sido completado.
-        
-        Raises:
-            ValueError: Si la cantidad no es positiva o el tipo de moneda no es válido.
+            dict: Datos formateados para mostrar en la Vista
         """
-        # Validación de entrada
-        if cantidad <= 0:
-            raise ValueError("La cantidad debe ser un número positivo")
+        # 1. Validar moneda 
+        if moneda not in Tasa.tipos():
+            return self._formatear_error(f"Moneda {moneda} no aceptada")
         
-        tipos_validos = Tasa.tipos()
-        if tipo_moneda not in tipos_validos:
-            raise ValueError(f"Tipo de moneda no válido. Tipos aceptados: {tipos_validos}")
+        # 2. Crear objeto Monto
+        monto = Monto(cantidad, moneda)
         
-        # Crear objeto Monto con el pago
-        pago = Monto(cantidad, tipo_moneda)
+        # 3. Convertir a CUP
+        monto_cup = monto.conversionA("CUP")
         
-        # Convertir a CUP si es necesario
-        if tipo_moneda == "CUP":
-            pago_en_cup = cantidad
-        else:
-            pago_en_cup = pago.conversionA("CUP")
+        # 4. Actualizar estado 
+        self._total_pagado_cup += monto_cup
+        self._historial_montos.append(monto)
         
-        # Actualizar estado
-        self.__total_pagado += pago_en_cup
-        self.__historial_pagos.append(pago)
+        # 5. Verificar completitud
+        self._completado = self._total_pagado_cup >= self._pago_total_cup
         
-        # Verificar si el pago está completado
-        self.__completado = self.__total_pagado >= self.__pago_total
-        
-        # Preparar respuesta
-        restante = max(0, self.__pago_total - self.__total_pagado)
-        
-        return {
-            'exito': True,
-            'mensaje': self.__generar_mensaje_pago(pago_en_cup, tipo_moneda, restante),
-            'pago_convertido': pago_en_cup,
-            'restante': restante,
-            'completado': self.__completado
-        }
+        # 6. Formatear respuesta para la Vista
+        return self._formatear_respuesta(monto, monto_cup)
     
-    def __generar_mensaje_pago(self, pago_cup: float, tipo_moneda: str, restante: float) -> str:
+    def _formatear_respuesta(self, monto: Monto, monto_cup: float) -> dict:
         """
-        Genera un mensaje descriptivo sobre el resultado del pago.
+        Formatea los datos del Modelo para la Vista.
         
         Args:
-            pago_cup (float): Pago convertido a CUP.
-            tipo_moneda (str): Tipo de moneda original.
-            restante (float): Cantidad restante por pagar.
-        
+            monto: Objeto Monto del Modelo
+            monto_cup: Valor convertido a CUP
+            
         Returns:
-            str: Mensaje formateado.
+            dict: Datos listos para mostrar en la Vista
         """
-        if self.__completado:
+        restante = max(0, self._pago_total_cup - self._total_pagado_cup)
+        
+        # Generar mensaje amigable
+        if self._completado:
             if restante == 0:
-                return "¡Pago completado exactamente! Gracias."
+                mensaje = "✅ Pago completado exactamente"
             else:
-                cambio = -restante  # restante es negativo cuando hay exceso
-                return f"¡Pago completado! Cambio: {cambio:.2f} CUP"
+                cambio = self._total_pagado_cup - self._pago_total_cup
+                mensaje = f"✅ Pago completado. Cambio: {cambio:.2f} CUP"
         else:
-            return f"Pago recibido: {pago_cup:.2f} CUP ({tipo_moneda} convertido). Restante: {restante:.2f} CUP"
-    
-    def obtener_estado_actual(self) -> dict:
-        """
-        Obtiene el estado actual del proceso de pago.
-        
-        Returns:
-            dict: Diccionario con el estado actual:
-                - 'pago_total': float - Total a pagar en CUP.
-                - 'total_pagado': float - Total pagado hasta ahora en CUP.
-                - 'restante': float - Cantidad restante por pagar en CUP.
-                - 'completado': bool - Indica si el pago está completado.
-                - 'historial': list - Lista de pagos realizados.
-        """
-        restante = max(0, self.__pago_total - self.__total_pagado)
+            mensaje = f"📝 Recibido: {monto_cup:.2f} CUP. Falta: {restante:.2f} CUP"
         
         return {
-            'pago_total': self.__pago_total,
-            'total_pagado': self.__total_pagado,
+            'monto_ingresado': str(monto),
+            'monto_convertido': monto_cup,
+            'total_pagado': self._total_pagado_cup,
             'restante': restante,
-            'completado': self.__completado,
-            'historial': self.__historial_pagos.copy()
+            'completado': self._completado,
+            'mensaje': mensaje
         }
     
-    def reiniciar_pago(self, nuevo_pago_total: float = None) -> None:
+    def _formatear_error(self, mensaje_error: str) -> dict:
         """
-        Reinicia el proceso de pago, opcionalmente con un nuevo total.
+        Formatea errores para la Vista.
         
         Args:
-            nuevo_pago_total (float, optional): Nuevo total a pagar. Si es None, 
-                                                mantiene el total actual.
-        
-        Raises:
-            ValueError: Si nuevo_pago_total no es positivo.
-        """
-        if nuevo_pago_total is not None:
-            if nuevo_pago_total <= 0:
-                raise ValueError("El pago total debe ser un número positivo")
-            self.__pago_total = float(nuevo_pago_total)
-        
-        self.__total_pagado = 0.0
-        self.__historial_pagos.clear()
-        self.__completado = False
-    
-    def obtener_tasas_disponibles(self) -> tuple:
-        """
-        Obtiene los tipos de monedas disponibles para pago.
-        
+            mensaje_error: Descripción del error
+            
         Returns:
-            tuple: Tipos de monedas disponibles.
+            dict: Error formateado
         """
-        return Tasa.tipos()
+        return {
+            'error': True,
+            'mensaje': f"❌ {mensaje_error}",
+            'completado': False
+        }
     
-    def convertir_a_cup(self, cantidad: float, tipo_moneda: str) -> float:
-        """
-        Convierte una cantidad de una moneda específica a CUP.
-        
-        Args:
-            cantidad (float): Cantidad a convertir.
-            tipo_moneda (str): Tipo de moneda original.
-        
-        Returns:
-            float: Cantidad convertida a CUP.
-        
-        Raises:
-            ValueError: Si el tipo de moneda no es válido.
-        """
-        if tipo_moneda not in Tasa.tipos():
-            raise ValueError(f"Tipo de moneda no válido: {tipo_moneda}")
-        
-        if tipo_moneda == "CUP":
-            return cantidad
-        
-        monto = Monto(cantidad, tipo_moneda)
-        return monto.conversionA("CUP")
+    #PROPIEDADES DE CONSULTA PARA LA VISTA
     
     @property
     def pago_total(self) -> float:
-        """Obtiene el pago total en CUP."""
-        return self.__pago_total
+        """Pago total para mostrar en Vista."""
+        return self._pago_total_cup
     
     @property
     def total_pagado(self) -> float:
-        """Obtiene el total pagado en CUP."""
-        return self.__total_pagado
+        """Total pagado para mostrar en Vista."""
+        return self._total_pagado_cup
     
     @property
     def completado(self) -> bool:
-        """Indica si el pago ha sido completado."""
-        return self.__completado
+        """Estado de completitud para Vista."""
+        return self._completado
     
     @property
-    def historial_pagos(self) -> list:
-        """Obtiene una copia del historial de pagos."""
-        return self.__historial_pagos.copy()
+    def historial(self) -> list:
+        """Historial formateado para Vista."""
+        return self._historial_montos.copy()
+    
+    @property
+    def monedas_aceptadas(self) -> list:
+        """Monedas disponibles del Modelo."""
+        return list(Tasa.tipos())
