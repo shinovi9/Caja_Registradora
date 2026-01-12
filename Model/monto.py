@@ -18,9 +18,13 @@ class Monto:
         Returns:
             float: cantidad del Monto convertida
         """
-        if Tasa.valor(self.__tipo) == 1.0:
-            return self.__cantidad / Tasa.valor(tipo)
-        return self.__cantidad * Tasa.valor(tipo)
+        tasa_origen = Tasa.valor(self.__tipo)
+        tasa_destino = Tasa.valor(tipo)       
+        # Paso 1: convertir a la base
+        cantidad_base = self.__cantidad * tasa_origen
+        # Paso 2: convertir de la base a la moneda destino
+        return cantidad_base / tasa_destino
+
     
     def cantidad(self) -> float:
         """_summary_
@@ -38,3 +42,4 @@ class Monto:
     
     def __str__(self):
         return f"{self.__cantidad} {self.__tipo}" 
+    
