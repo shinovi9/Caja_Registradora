@@ -74,7 +74,7 @@ class ViewModel:
         # Generar mensaje 
         if self._completado:
             if restante == 0:
-                mensaje = "✅ Pago completado exactamente"
+                mensaje = "✅ Pago completado"
             else:
                 cambio = self._total_pagado_cup - self._pago_total_cup
                 mensaje = f"✅ Pago completado. Cambio: {cambio:.2f} CUP"
