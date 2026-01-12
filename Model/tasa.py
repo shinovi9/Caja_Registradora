@@ -29,7 +29,7 @@ class Tasa:
         return Tasa.__tasa_Cambio[tipo]
     
     @staticmethod
-    def tipo()-> tuple:
+    def tipos()-> tuple:
         """### Obtener los Tipos de Monedas disponibles en la tasa de Cambio
         Returns:
             tuple: Todas la monedas disponibles

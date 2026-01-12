@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
+from tasa import *
 
 class Monto:
     def __init__(self, cantidad : float, tipo : str):
-        """## Inicializacion del Monto
+        """### Inicializacion del Monto
         Args:
             cantidad (float): Tamaño del Monto
             tipo (str): Tipo de Monto . Ejemplo(CUP,USD,...)
@@ -10,8 +11,16 @@ class Monto:
         self.__cantidad = cantidad
         self.__tipo = tipo
         
-    def convertir(self, tipo : str):
-        pass
+    def convercionA(self, tipo : str) -> float:
+        """### Convirte la cantidad del monto, a la del monto deceado
+        Args:
+            tipo (str): Moneda que se decea convertir
+        Returns:
+            float: cantidad del Monto convertida
+        """
+        if Tasa.valor(self.__tipo) == 1.0:
+            return self.__cantidad / Tasa.valor(tipo)
+        return self.__cantidad * Tasa.valor(tipo)
     
     def cantidad(self) -> float:
         """_summary_
