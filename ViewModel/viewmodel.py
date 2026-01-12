@@ -52,7 +52,7 @@ class ViewModel:
         self._total_pagado_cup += monto_cup
         self._historial_montos.append(monto)
         
-        # 5. Verificar completitud
+        # 5. Verificar si el pago ha sido completado
         self._completado = self._total_pagado_cup >= self._pago_total_cup
         
         # 6. Formatear respuesta para la Vista
@@ -71,7 +71,7 @@ class ViewModel:
         """
         restante = max(0, self._pago_total_cup - self._total_pagado_cup)
         
-        # Generar mensaje amigable
+        # Generar mensaje 
         if self._completado:
             if restante == 0:
                 mensaje = "✅ Pago completado exactamente"
