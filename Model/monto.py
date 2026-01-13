@@ -29,14 +29,14 @@ class Monto:
         # convertir de la base a la moneda destino
         return cantidad_base / tasa_destino
 
-    
+    @property
     def cantidad(self) -> float:
         """### Obtener el Valor del monto
         Returns:
             float: Valor del monto
         """
         return self.__cantidad
-
+    @property
     def tipo(self) -> str:
         """### Obtener el Tipo del monto
         Returns:
