@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """
 ViewModel para el sistema de Caja Registradora.
+Actúa como intermediario entre Vista y Modelo.
 Funciones:
-1. Conectar Vista y Modelo
-2. Recibir comandos #! y datos de la Vista, para despues entregárselos a Modelo de manera conveniente
+1. Recibir comandos de la Vista
+2. Buscar al Modelo para lógica de negocio
 3. Formatear datos del Modelo para la Vista
-#! 4. Controlar varios aspectos de la Vista 
 """
 
-from Model.monto import Monto
 from Model.tasa import Tasa
+from Model.pago import Pago
 
 
 class ViewModel:
-    """ViewModel que actúa como puente entre Vista y Modelo."""
+    """ViewModel que coordina la comunicación entre la vista y el modelo"""
     
     def __init__(self, pago_total: float):
         """
@@ -22,114 +22,128 @@ class ViewModel:
         Args:
             pago_total (float): Monto total a pagar en CUP.
         """
+        # Crear instancia del Modelo Pago
+        self._pago = Pago(pago_total)
     
-        self._pago_total_cup = pago_total
-        self._total_pagado_cup = 0.0
-        self._historial_montos = []  
-        self._completado = False
-    
-    def procesar_pago(self, cantidad: float, moneda: str) -> dict:
+    def procesar_entrada(self, entrada: str) -> dict:
         """
-        Procesa un pago desde la Vista.
+        Procesa entrada del usuario desde la Vista.
+        Delega toda la lógica de negocio al Modelo.
         
         Args:
-            cantidad: Cantidad ingresada por el usuario
-            moneda: Tipo de moneda ingresada
+            entrada: Formato "cantidad moneda" (ej: "100 USD")
             
         Returns:
-            dict: Datos formateados para mostrar en la Vista
+            dict: Datos formateados para la Vista
         """
-        # 1. Validar moneda 
-        if moneda not in Tasa.tipos():
-            return self._formatear_error(f"Moneda {moneda} no aceptada")
-        
-        # 2. Crear objeto Monto
-        monto = Monto(cantidad, moneda)
-        
-        # 3. Convertir a CUP
-        monto_cup = monto.conversionA("CUP")
-        
-        # 4. Actualizar estado 
-        self._total_pagado_cup += monto_cup
-        self._historial_montos.append(monto)
-        
-        # 5. Verificar si el pago ha sido completado
-        self._completado = self._total_pagado_cup >= self._pago_total_cup
-        
-        # 6. Formatear respuesta para la Vista
-        return self._formatear_respuesta(monto, monto_cup)
+        try:
+            # Parsear entrada 
+            cantidad_str, moneda = self._parsear_entrada(entrada)
+            cantidad = float(cantidad_str)
+            
     
-    def _formatear_respuesta(self, monto: Monto, monto_cup: float) -> dict:
+            resultado_modelo = self._pago.registrar_pago(cantidad, moneda)
+            
+            # Formatear respuesta del Modelo para la Vista
+            return self._formatear_para_vista(resultado_modelo)
+            
+        except ValueError as e:
+            return self._crear_error(f"Error: {e}")
+        except Exception as e:
+            return self._crear_error(f"Error inesperado: {e}")
+    
+    def _parsear_entrada(self, entrada: str) -> tuple:
         """
-        Formatea los datos del Modelo para la Vista.
+        Parsea la entrada del usuario.
         
         Args:
-            monto: Objeto Monto del Modelo
-            monto_cup: Valor convertido a CUP
+            entrada: Cadena de entrada
             
         Returns:
-            dict: Datos listos para mostrar en la Vista
+            tuple: (cantidad_str, moneda)
         """
-        restante = max(0, self._pago_total_cup - self._total_pagado_cup)
+        entrada = entrada.strip()
+        if not entrada:
+            raise ValueError("Entrada vacía")
         
-        # Generar mensaje 
-        if self._completado:
-            if restante == 0:
-                mensaje = "✅ Pago completado"
-            else:
-                cambio = self._total_pagado_cup - self._pago_total_cup
-                mensaje = f"✅ Pago completado. Cambio: {cambio:.2f} CUP"
-        else:
-            mensaje = f"📝 Recibido: {monto_cup:.2f} CUP. Falta: {restante:.2f} CUP"
+        partes = entrada.split()
+        if len(partes) != 2:
+            raise ValueError("Formato: 'cantidad moneda' (ej: '100 USD')")
         
+        return partes[0], partes[1].upper()
+    
+    def _formatear_para_vista(self, resultado_modelo: dict) -> dict:
+        """
+        Formatea los datos del Modelo para presentación en Vista.
+        
+        Args:
+            resultado_modelo: Datos crudos del Modelo
+            
+        Returns:
+            dict: Datos formateados para UI
+        """
+        monto = resultado_modelo['monto_original']
+        
+    
         return {
+            'exito': True,
             'monto_ingresado': str(monto),
-            'monto_convertido': monto_cup,
-            'total_pagado': self._total_pagado_cup,
-            'restante': restante,
-            'completado': self._completado,
-            'mensaje': mensaje
+            'monto_convertido': f"{resultado_modelo['monto_cup']:.2f} CUP",
+            'total_acumulado': f"{resultado_modelo['total_acumulado']:.2f} CUP",
+            'restante': f"{resultado_modelo['restante']:.2f} CUP",
+            'completado': resultado_modelo['completado'],
+            'mensaje': self._generar_mensaje(resultado_modelo)
         }
     
-    def _formatear_error(self, mensaje_error: str) -> dict:
-        """
-        Formatea errores para la Vista.
-        
-        Args:
-            mensaje_error: Descripción del error
-            
-        Returns:
-            dict: Error formateado
-        """
+    def _generar_mensaje(self, resultado: dict) -> str:
+        """Genera mensaje para el usuario."""
+        if resultado['completado']:
+            if resultado['exceso'] == 0:
+                return "✅ Pago completado exactamente"
+            else:
+                return f"✅ Pago completado. Cambio: {resultado['exceso']:.2f} CUP"
+        else:
+            return f"📝 Recibido: {resultado['monto_cup']:.2f} CUP. Falta: {resultado['restante']:.2f} CUP"
+    
+    def _crear_error(self, mensaje: str) -> dict:
+        """Crea respuesta de error formateada."""
         return {
-            'error': True,
-            'mensaje': f"❌ {mensaje_error}",
+            'exito': False,
+            'mensaje': f"❌ {mensaje}",
             'completado': False
         }
     
-    #PROPIEDADES DE CONSULTA PARA LA VISTA
+    #PROPIEDADES PARA LA VISTA
     
     @property
-    def pago_total(self) -> float:
-        """Pago total para mostrar en Vista."""
-        return self._pago_total_cup
-    
-    @property
-    def total_pagado(self) -> float:
-        """Total pagado para mostrar en Vista."""
-        return self._total_pagado_cup
-    
-    @property
-    def completado(self) -> bool:
-        """Estado de completitud para Vista."""
-        return self._completado
-    
-    @property
-    def historial(self) -> list:
-        """Historial formateado para Vista."""
-        return self._historial_montos.copy()
+    def estado_actual(self) -> dict:
+        """Obtiene estado formateado para la Vista."""
+        estado = self._pago.obtener_estado()
+        
+        return {
+            'pago_total': f"{estado['total_objetivo']:.2f} CUP",
+            'pagado': f"{estado['total_acumulado']:.2f} CUP",
+            'restante': f"{estado['restante']:.2f} CUP",
+            'completado': estado['completado'],
+            'numero_pagos': estado['numero_pagos'],
+            'historial': [
+                f"{monto} → {monto.conversionA('CUP'):.2f} CUP"
+                for monto in estado['pagos']
+            ]
+        }
     
     @property
     def monedas_aceptadas(self) -> list:
-        """Monedas disponibles del Modelo."""
-        return list(Tasa.tipos())
+        """Obtiene monedas disponibles formateadas para Vista."""
+        return [f"{moneda}" for moneda in Tasa.tipos()]
+    
+    @property
+    def tasas_cambio(self) -> list:
+        """Obtiene tasas de cambio formateadas para Vista."""
+        return [f"1 {moneda} = {Tasa.valor(moneda):.2f} CUP" 
+                for moneda in Tasa.tipos()]
+    
+    @property
+    def completado(self) -> bool:
+        """Indica si el pago está completado."""
+        return self._pago.completado
