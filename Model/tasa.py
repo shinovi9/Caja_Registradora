@@ -2,7 +2,7 @@
 import json
 
 class Tasa:
-
+    """Gestiona el Acceso de las Tasa de cambio"""
     __tasa_Cambio : dict
     
     @staticmethod

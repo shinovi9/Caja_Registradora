@@ -3,11 +3,10 @@
 ViewModel para el sistema de Caja Registradora.
 Actúa como intermediario entre la Vista y el Modelo.
 """
-#! Pero el objetivo del principal del ViewModel es darle logica al View, procesar pagos es del Model
+#Todo: Pero el objetivo del principal del ViewModel es darle logica al View, procesar pagos es del Model porque implica logica de negocio
 
 from Model.monto import Monto
 from Model.tasa import Tasa
-
 
 class ViewModel:
     """ViewModel que gestiona la lógica de procesamiento de pagos."""

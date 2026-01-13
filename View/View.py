@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # console_view.py
 class View:
     def Mostrar_Menú(self):
