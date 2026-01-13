@@ -5,6 +5,7 @@ class View:
         print("1. Opción 1")
         print("2. Opción 2")
         print("3. Opción 3")
+        
     def Opción_Seleccionada(self):
         return input("Por favor, selecciona una opción: ")
 
