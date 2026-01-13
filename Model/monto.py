@@ -7,10 +7,14 @@ class Monto:
         Args:
             cantidad (float): Tamaño del Monto
             tipo (str): Tipo de Monto . Ejemplo(CUP,USD,...)
+        ```
+        self.__cantidad = cantidad if cantidad > 0 else 1
+        self.__tipo = tipo if tipo in Tasa.tipos()  else "CUP"
+        ```
         """
-        self.__cantidad = cantidad
-        self.__tipo = tipo
-        
+        self.__cantidad = cantidad if cantidad > 0 else 1
+        self.__tipo = tipo if tipo in Tasa.tipos() else "CUP"
+
     def convercionA(self, tipo : str) -> float:
         """### Convirte la cantidad del monto, a la del monto deceado
         Args:
@@ -20,23 +24,23 @@ class Monto:
         """
         tasa_origen = Tasa.valor(self.__tipo)
         tasa_destino = Tasa.valor(tipo)       
-        # Paso 1: convertir a la base
+        # convertir a la base
         cantidad_base = self.__cantidad * tasa_origen
-        # Paso 2: convertir de la base a la moneda destino
+        # convertir de la base a la moneda destino
         return cantidad_base / tasa_destino
 
     
     def cantidad(self) -> float:
-        """_summary_
+        """### Opctener el Volor del monto
         Returns:
-            float: _description_
+            float: Volor del monto
         """
         return self.__cantidad
 
     def tipo(self) -> str:
-        """_summary_
+        """### Opctener el Tipo del monto
         Returns:
-            str: _description_
+            str: eltipo de moneda
         """
         return self.__tipo
     
