@@ -12,7 +12,7 @@ class Tasa:
         Returns:
             dict: La tasa de cambio
         """
-        ruta = Path("./Caja_Registradora/Data/baseDatos_Tasas.json")
+        ruta = Path("./Caja_Registradora/Data/baseDatos_Tasas/Tasas.json")
         if not ruta.exists():
             raise FileNotFoundError(f"No se encontró el archivo: {ruta}")
         return json.loads(ruta.read_text(encoding="utf-8"))

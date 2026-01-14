@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from monto import Monto
 from tasa import Tasa
-from _main import main
+
 """ 
 LLeva y procesa los Pagos
 """
@@ -18,9 +18,13 @@ class Pago:
         pass
     
     @staticmethod
-    def consultar_deuda(deudor : str)-> tuple:
+    def __consultar_deuda(deudor : str, tipo : str = '')-> tuple:
         pass
     
     @staticmethod
-    def actualizar_deuda(dudor : str, monto_ : Monto):
+    def __actualizar_deuda(dudor : str, monto_ : tuple):
+        pass
+    
+    @staticmethod
+    def __main(args : dict)-> dict:
         pass
