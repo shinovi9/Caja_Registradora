@@ -3,8 +3,9 @@
 ViewModel para el sistema de Caja Registradora.
 Funciones:
 1. Conectar Vista y Modelo
-2. Recibir comandos #! y datos de la Vista, para despues entregárselos a Modelo los da manera conveniente
+2. Recibir comandos #! y datos de la Vista, para despues entregárselos a Modelo de manera conveniente
 3. Formatear datos del Modelo para la Vista
+#! 4. Controlar varios aspectos de la Vista 
 """
 
 from Model.monto import Monto
