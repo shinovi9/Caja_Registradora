@@ -44,6 +44,6 @@ class Monto:
         """
         return self.__tipo
     
-    def __str__(self):
+    def __str__(self)-> str:
         return f"{self.__cantidad} {self.__tipo}" 
     

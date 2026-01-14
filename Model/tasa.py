@@ -28,6 +28,8 @@ class Tasa:
         Returns:
             float: Valor actual de la moneda
         """
+        if tipo not in Tasa.__tasa_Cambio.keys():
+            raise ValueError("Tipo invalido")
         return Tasa.__tasa_Cambio[tipo]
     
     @staticmethod
