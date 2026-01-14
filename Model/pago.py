@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 import json
 from pathlib import Path
-from Model.monto import Monto
-from Model.tasa import Tasa
+from monto import Monto
+from tasa import Tasa
+from _main import main
 """ 
 LLeva y procesa los Pagos
 """
 class Pago:
     
     @staticmethod
-    def bandeja(peticion : dict):
+    def bandeja(peticion : dict)-> dict:
         pass
     
     @staticmethod
@@ -17,6 +18,9 @@ class Pago:
         pass
     
     @staticmethod
-    def consultar_Deuda(deudor : str)-> float:
+    def consultar_deuda(deudor : str)-> tuple:
         pass
     
+    @staticmethod
+    def actualizar_deuda(dudor : str, monto_ : Monto):
+        pass
