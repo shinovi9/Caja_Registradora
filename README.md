@@ -52,15 +52,27 @@ Esta separación facilita pruebas unitarias, mantenimiento y evolución del sist
 ```
 Caja_Registradora/
 ├── Data/
-│   └── baseDatos_Tasas.json
+│   ├── baseDatos_Deuda/
+│   │   └── Deudores.json
+│   ├── baseDatos_Tasas/
+│   │   └── Tasas.json
+│   └── .gitkeep
+│
 ├── Model/
-│   ├── tasa.py
-│   └── pago.py
+│   ├── monto.py
+│   ├── pago.py
+│   └── tasa.py
+│
 ├── ViewModel/
-│   └── pago_viewmodel.py
+│   └── viewmodel.py    # coordina Vista ↔ Model
+│
 ├── View/
-│   └── cli.py
+│   └── view.py         # interfaz CLI o futura GUI
+│
+├── main.py             # punto de entrada de la aplicación
 ├── requirements.txt
 ├── .gitignore
+├── .gitattributes
+├── LICENSE
 └── README.md
 ```
