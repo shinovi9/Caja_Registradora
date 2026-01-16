@@ -52,8 +52,7 @@ Esta separación facilita pruebas unitarias, mantenimiento y evolución del sist
 ```
 Caja_Registradora/
 ├── Data/
-│   ├── baseDatos_Deuda/
-│   │   └── Deudores.json
+│   │   
 │   ├── baseDatos_Tasas/
 │   │   └── Tasas.json
 │   └── .gitkeep
