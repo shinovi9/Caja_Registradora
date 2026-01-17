@@ -8,7 +8,7 @@ class Monto:
             cantidad (float): Tamaño del Monto
             tipo (str): Tipo de Monto . Ejemplo(CUP,USD,...)
         ```
-        self.__cantidad = cantidad if cantidad > 0 else 1
+        self.__cantidad = cantidad 
         self.__tipo = tipo if tipo in Tasa.tipos()  else "CUP"
         ```
         """
