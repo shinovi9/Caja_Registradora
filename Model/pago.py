@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-import json
-from pathlib import Path
 from monto import Monto
 from tasa import Tasa
 
@@ -14,45 +12,90 @@ class Pago:
         pass
     
     @staticmethod
-    def __procesar(costos: tuple, montos : list)-> dict:
-        
-        restante_monto : float
-        tamaño_total_Monto : float
-        montos_xTipos : dict
-        montos_finales : list
-        costos_faltante : tuple
-        
-
-        tipo_destinado = costos[0]
-        tasa_destino = Tasa.valor(tipo_destinado)
-        
-        for monto in montos: # Separar los tipos de Monto
-            if monto.tipo() not in montos_xTipos:
-                montos_xTipos[monto.tipo()] = [monto,]
-            else:
-                montos_xTipos[monto.tipo()].append(monto)
-        # Agrupacion de los montos del tipo a la deudea destinado
-        if tipo_destinado in montos_xTipos:
-            montos_finales = [m for m in montos_xTipos[tipo_destinado]]
-        # Calculo del tamaño_total_monto
-        costos_faltante : tuple = (tipo_destinado, 0.0)
-        
-        if len(montos_xTipos.keys()) > 1:
-            pass
-        else: # en caso de no tener aque convertir montos
-            for vM in montos_finales:
-                tamaño_total_Monto += vM.valor()            
-        restante_monto = costos[1] - tamaño_total_Monto
-        if restante_monto <= 0 :
-            costos_faltante = (tipo_destinado, 0.0)
-            if restante_monto < 0:
-                restante_monto -= restante_monto*2
-        elif restante_monto > 0:
-            costos_faltante = (tipo_destinado, restante_monto)
-        pago_exitoso = True if costos_faltante == 0.0 else False
-        
-        return {"pago_exitoso" : pago_exitoso ,"sobrante" : restante_monto, "faltante" : costos_faltante}
+    def __separar_montos(lista_montos: list[Monto]) -> dict[str, list[Monto]]:
+        """
+        Agrupa una lista de objetos Monto según su tipo de moneda.
     
+        Args:
+            lista_montos (list[Monto]): Lista de montos a clasificar por tipo de moneda.
+    
+        Returns:
+            dict[str, list[Monto]]: Diccionario donde cada clave es el tipo de moneda
+            (ej. "USD", "CUP") y el valor es una lista de objetos Monto correspondientes.
+            Ejemplo: {"USD": [Monto(...), ...], "CUP": [Monto(...), ...]}
+        """
+        montos_por_moneda: dict[str, list[Monto]] = {}
+    
+        for monto in lista_montos:
+            tipo_moneda = monto.tipo()
+            if tipo_moneda not in montos_por_moneda:
+                montos_por_moneda[tipo_moneda] = [monto]
+            else:
+                montos_por_moneda[tipo_moneda].append(monto)
+    
+        return montos_por_moneda
+    
+    @staticmethod
+    def __procesar(costo: tuple[str, float], lista_montos: list[Monto]) -> dict:
+        """### Procesa los montos disponibles y calcula el total convertido en la moneda objetivo.
+
+        Args:
+            costo (tuple[str, float]): Tupla con la moneda objetivo (str) y el costo requerido (float).
+            lista_montos (list[Monto]): Lista de objetos Monto que representan las cantidades disponibles en distintas monedas.
+
+        Returns:
+            dict: Diccionario con la moneda objetivo, el costo requerido, el total convertido,
+                    y las diferencias de sobrante o faltante respecto al costo.
+
+        """
+        moneda_objetivo: str = costo[0]   # Moneda en la que se debe pagar, ej. "CUP"
+        costo_requerido: float = costo[1] # Cantidad a pagar, ej. 150.0
+
+        montos_por_moneda: dict = Pago.__separar_montos(lista_montos)  
+        # Ejemplo: {"CUP": [Monto(...), ...], "USD": [Monto(...), ...]}
+
+        monto_total_convertido: Monto     # Resultado final en la moneda objetivo
+        valores_convertidos: list[float] = []  # Lista de subtotales por cada tipo de moneda
+
+        # Recorremos cada tipo de moneda
+        for tipo_moneda in montos_por_moneda.keys():
+            subtotal: float = 0.0
+            if tipo_moneda == moneda_objetivo:
+                for monto in montos_por_moneda[tipo_moneda]:
+                    subtotal += monto.valor()
+            else:
+                for monto in montos_por_moneda[tipo_moneda]:
+                    subtotal += monto.conversionA(moneda_objetivo)
+            valores_convertidos.append(subtotal)
+
+        # Sumamos todos los subtotales
+        total_convertido: float = sum(valores_convertidos)
+
+        monto_total_convertido = Monto(total_convertido, moneda_objetivo)
+    
+        sobrante = monto_total_convertido.valor() - costo_requerido
+        faltante = costo_requerido - monto_total_convertido.valor()
+    
+        # Comparaciones
+        if total_convertido > costo_requerido:
+            sobrante = total_convertido - costo_requerido
+            faltante = 0.0
+        elif total_convertido < costo_requerido:
+            sobrante = 0.0
+            faltante = costo_requerido - total_convertido
+        else:
+            sobrante = 0.0
+            faltante = 0.0
+
+        return {
+            "moneda": moneda_objetivo,
+            "costo_requerido": costo_requerido,
+            "total_convertido": total_convertido,
+            "sobrante": sobrante,
+            "faltante": faltante
+        }
+
     @staticmethod
     def __main(args : dict)-> dict:
         pass
+    
