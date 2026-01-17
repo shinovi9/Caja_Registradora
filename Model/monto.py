@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from tasa import *
+from Model.tasa import *
 
 class Monto:
     def __init__(self, cantidad : float, tipo : str):
@@ -12,7 +12,7 @@ class Monto:
         self.__tipo = tipo if tipo in Tasa.tipos()  else "CUP"
         ```
         """
-        self.__cantidad = cantidad if cantidad > 0 else 1
+        self.__cantidad = cantidad 
         self.__tipo = tipo if tipo in Tasa.tipos() else "CUP"
 
     def conversionA(self, tipo : str) -> float:
@@ -27,7 +27,8 @@ class Monto:
         # convertir a la base
         cantidad_base = self.__cantidad * tasa_origen
         # convertir de la base a la moneda destino
-        return cantidad_base / tasa_destino
+        if tasa_destino!=0:
+            return cantidad_base / tasa_destino
 
     @property
     def cantidad(self) -> float:
