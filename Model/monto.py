@@ -8,7 +8,7 @@ class Monto:
             cantidad (float): Tamaño del Monto
             tipo (str): Tipo de Monto . Ejemplo(CUP,USD,...)
         """
-        self.__cantidad = cantidad if cantidad >= 0 else 0
+        self.__cantidad = cantidad if cantidad >= 0.0 else 0.0
         self.__tipo = tipo if tipo in Tasa.tipos() else "CUP"
 
     def conversionA(self, tipo : str) -> float:
@@ -33,7 +33,7 @@ class Monto:
         Returns:
             float: Valor del monto
         """
-        return self.__cantidad
+        return float(self.__cantidad)
     @property
     def tipo(self) -> str:
         """### Obtener el Tipo del monto

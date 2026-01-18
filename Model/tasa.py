@@ -1,27 +1,11 @@
 #!/usr/bin/env python3
-import json
-from pathlib import Path
 
 class Tasa:
     """Gestiona el Acceso de las Tasa de cambio"""
-    __tasa_Cambio : dict
-    
-    @staticmethod
-    def __cargar_Data()-> dict:
-        """## Carga de la Base de Datos las Tasas de cambio 
-        Returns:
-            dict: La tasa de cambio
-        """
-        ruta = Path("./Caja_Registradora/Data/baseDatos_Tasas/Tasas.json")
-        if not ruta.exists():
-            raise FileNotFoundError(f"No se encontró el archivo: {ruta}")
-        return json.loads(ruta.read_text(encoding="utf-8"))
+    __tasa_Cambio : dict = {"CUP" : 1.0, "USD" : 460.0,"EUR" : 500.00,}
 
-    
-    __tasa_Cambio = __cargar_Data()
-    
-    @staticmethod
-    def valor(tipo : str)-> float:
+    @classmethod
+    def valor(cls,tipo : str)-> float:
         """## Obtener el Valor actual de una moneda en la Tasa de canbio
         Args:
             tipo (str): tipo de moneda
@@ -32,8 +16,8 @@ class Tasa:
             raise ValueError("Tipo invalido")
         return Tasa.__tasa_Cambio[tipo]
     
-    @staticmethod
-    def tipos()-> tuple:
+    @classmethod
+    def tipos(cls)-> tuple[str]:
         """### Obtener los Tipos de Monedas disponibles en la tasa de Cambio
         Returns:
             tuple: Todas la monedas disponibles
