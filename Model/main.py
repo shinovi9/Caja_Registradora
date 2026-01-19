@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
 from pago import Pago
 
-Pago.bandeja()
+while True:
+    Pago.bandeja()
+    e = input("Nueva Operacion(y/n); default(y).\n>_").lower()
+    if e == "n": break

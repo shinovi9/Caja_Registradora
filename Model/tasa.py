@@ -2,7 +2,7 @@
 
 class Tasa:
     """Gestiona el Acceso de las Tasa de cambio"""
-    __tasa_Cambio : dict = {"CUP" : 1.0, "USD" : 460.0,"EUR" : 500.00,}
+    __tasa_Cambio : dict = {"CUP" : 1.0, "USD" : 460.0,"EUR" : 500.0,}
 
     @classmethod
     def valor(cls,tipo : str)-> float:
