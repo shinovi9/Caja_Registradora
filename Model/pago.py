@@ -6,10 +6,6 @@ from tasa import Tasa
 LLeva y procesa los Pagos
 """
 class Pago:
-    
-    @staticmethod
-    def bandeja():
-        Pago.__main()
 
     @staticmethod
     def __tabla_tasa():
@@ -82,7 +78,7 @@ class Pago:
         return (valor, tipo)
     
     @staticmethod
-    def __main():
+    def main():
         # Muestrar una Tabla de las Tasas de Cambio        
         Pago.__tabla_tasa()
         
