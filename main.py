@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from monto import Monto
 from pago import Pago
 
 while True:

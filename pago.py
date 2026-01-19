@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from monto import Monto
-from tasa import Tasa
+from monto import *
+from tasa import *
 
 """ 
 LLeva y procesa los Pagos
