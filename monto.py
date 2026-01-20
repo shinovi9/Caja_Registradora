@@ -21,14 +21,14 @@ class Monto:
         tasa_origen = Tasa.valor(self.__tipo)
         tasa_destino = Tasa.valor(tipo)       
         # convertir a la base
-        if self.cantidad == 0:
+        if self.__cantidad == 0:
             return 0
         cantidad_base = self.__cantidad * tasa_origen
         # convertir de la base a la moneda destino
         return cantidad_base / tasa_destino
 
     @property
-    def cantidad(self) -> float:
+    def valor(self) -> float:
         """### Obtener el Valor del monto
         Returns:
             float: Valor del monto
