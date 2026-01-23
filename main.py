@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-from monto import Monto
-from pago import Pago
-from rich.console import Console
+from Model.sumadora import Sumadora
+
 import view
 
 while True:
     view.tabla()
-    Pago.main()
+    Sumadora.main()
     e = input("Nueva Operacion(y/n); default(y).\n>_").lower()
     if e == "n": break
     view.refescar()
