@@ -21,14 +21,14 @@ class Monto:
             float: cantidad del Monto convertida
         """
         # Obtener la lista de tipos
-        tipos_lista = list(Tasa.tipos())
+        tipos = Tasa.tipos()
         
         # Verificar que el índice sea válido
-        if indice < 0 or indice >= len(tipos_lista):
-            raise ValueError(f"Índice {indice} fuera de rango. Válidos: 0 a {len(tipos_lista)-1}")
+        if indice < 0 or indice >= len(tipos):
+            raise ValueError(f"Índice {indice} fuera de rango. Válidos: 0 a {len(tipos)-1}")
         
         # Obtener el tipo de moneda destino a partir del índice
-        tipo_destino = tipos_lista[indice]
+        tipo_destino = tipos[indice]
         
         # Obtener tasas de cambio
         tasa_origen = Tasa.valor(self.__tipo)
@@ -71,9 +71,9 @@ class Monto:
         # Verificar si el nombre es un tipo de moneda válido
         if name in Tasa.tipos():
             # Obtener el índice de la moneda en la lista de tipos
-            tipos_lista = list(Tasa.tipos())
+            tipos = list(Tasa.tipos())
             
-            indice = tipos_lista.index(name)
+            indice = tipos.index(name)
             # Llamar a conversionA con el índice
             return self.conversionA(indice)
            

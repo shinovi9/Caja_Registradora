@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 from pathlib import Path
+from Model.tipo_inválido import TipoInvalido
 
 class Tasa:
     """Gestiona el Acceso de las Tasa de cambio"""
@@ -85,3 +86,9 @@ class Tasa:
             
         except Exception as e:
             raise IOError(f"No se pudo guardar el archivo: {e}")
+
+
+    def __getattr__(self, name)-> str:
+        if name not in self.denominaciones():
+            raise TipoInvalido()
+        return str(name)
