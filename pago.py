@@ -32,13 +32,13 @@ class Pago:
         tasa_tipo = Tasa.tipos()
         # registrar costos
         costo_valor, costo_tipo = view.input_("Ingrese el costo por Paga","Cual es el tipo de moneda del Costo")
-        costo_tipo = tasa_tipo[costo_tipo]
+        costo_tipo = tasa_tipo[costo_tipo] if costo_tipo < len(tasa_tipo) else tasa_tipo[-1]
         costo : Monto = Monto(costo_valor, costo_tipo)
         
         while costo.conversionA(costo_tipo) > 0.0:
             # registrar monto
             monto_valor, monto_tipo = view.input_("Ingrese el Monto a Pagar","Cual es el tipo de moneda del Monto")
-            monto_tipo = tasa_tipo[monto_tipo]
+            monto_tipo = tasa_tipo[monto_tipo] if monto_tipo < len(tasa_tipo) else tasa_tipo[-1]
             monto: Monto = Monto(monto_valor, monto_tipo)
             # calcular y muestra el nuevo costo y monto sobrante
             resultado = Pago.__Calcular(costo,monto)
