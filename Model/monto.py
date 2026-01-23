@@ -20,7 +20,7 @@ class Monto:
         Returns:
             float: cantidad del Monto convertida
         """
-        # Obtener la lista de tipos
+        # Obtener la tupla de tipos
         tipos = Tasa.tipos()
         
         # Verificar que el índice sea válido
