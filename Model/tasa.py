@@ -51,4 +51,5 @@ class Tasa:
 
 
 class DenominacionInvalida(Exception):
-    pass
+    def __init__(self):
+        super().__init__(f"Denominación de moneda no válida")

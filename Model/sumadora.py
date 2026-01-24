@@ -10,8 +10,8 @@ class Sumadora:
         tasa = Tasa()
         tasa_tipo = tasa.denominaciones()
         # registrar deudas
-        deuda_valor, t= view.input_("Ingrese el deuda por Pagar")
-        deuda : Monto = Monto(deuda_valor, tasa.CUP)
+        deuda_valor, t= view.input_("Ingrese la deuda por Pagar")
+        deuda : Monto = Monto(deuda_valor)
         
         while deuda.CUP > 0.0:
             # registrar monto

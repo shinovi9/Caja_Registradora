@@ -19,8 +19,8 @@ def tabla():
     ```
     """
     tasa = Tasa()
-    console = Console()
     tasa_tipo = tasa.denominaciones()
+    console = Console()
     #crear tabla
     tabla = Table(title="Tasas de Cambio", header_style= "bold green", border_style="bold salmon1",width=22)
     #Definir Columnas
@@ -70,3 +70,30 @@ def refescar():
     """
     console = Console()
     console.clear()
+    
+
+def tabla_H():
+    """### Crea una Tabla donde se muestra las Tasas de Cambio en horizontal
+    ```
+                        Tasas de Cambio                      
+    ┏━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━┓
+    ┃   ID   ┃  0   ┃   1    ┃   2    ┃   3    ┃   4   ┃  5   ┃
+    ┡━━━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━┩
+    │  Tipo  │ CUP  │  USD   │  EUR   │  CAD   │  GBP  │ MXN  │
+    ├────────┼──────┼────────┼────────┼────────┼───────┼──────┤
+    │ Valor  │ 1.0  │ 460.0  │ 500.0  │ 300.0  │ 553.0 │ 25.0 │
+    └────────┴──────┴────────┴────────┴────────┴───────┴──────┘
+    ```
+    """
+    tasa = Tasa()
+    console = Console()
+    tasa_tipo = tasa.denominaciones()
+    #crear tabla
+    tabla = Table(title="Tasas de Cambio", header_style= "bold cyan", border_style="bold salmon1",width=59)
+    
+    tabla.add_column("ID", justify="center",style="bold green")
+    for idx in range(len(tasa_tipo)):
+        tabla.add_column(str(idx),justify="center",style="bold cyan")
+    tabla.add_row("Tipo",*tasa_tipo,end_section=True,style="bold magenta")
+    tabla.add_row("Valor",*[str(tasa.valor(v)) for v in tasa_tipo],end_section=True,style="bold red3")
+    console.print(tabla)
