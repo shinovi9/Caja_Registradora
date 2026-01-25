@@ -36,8 +36,8 @@ def tabla():
 def input_(text_valor : str, text_tipo: str = '')->tuple:
     """### Proporciona una entrada de datos, aprueba de errores
     Args:
-        text_valor (str): Descricion para la entrada del input valor
-        text_tipo (str): Descricion para la entrada del input valor
+        text_valor (str): Descripción para la entrada del input valor
+        text_tipo (str): Descripción para la entrada del input valor
     Returns:
         tuple:````python
         (valor : float, id_tipo : int )
@@ -50,7 +50,7 @@ def input_(text_valor : str, text_tipo: str = '')->tuple:
         try:
             valor = float(input(text_valor+"\n>_"))
         except ValueError:
-            console.print("Porfavor ingrese un numero", style="bold red")
+            console.print("Por favor ingrese un numero", style="bold red")
             continue
         break
     if not(text_tipo == '') :
@@ -58,15 +58,15 @@ def input_(text_valor : str, text_tipo: str = '')->tuple:
             try:
                 tipo = int(input(text_tipo+"(ingrese el id)\n>_"))
             except ValueError:
-                console.print("Porfavor ingrese un numero entero", style="bold red")
+                console.print("Por favor ingrese un numero entero", style="bold red")
                 continue
             break
         return (valor, tipo)
     return (valor,'')
 
 
-def refescar():
-    """### refesca la vista  de la consola 
+def refrescar():
+    """### refresca la vista  de la consola 
     """
     console = Console()
     console.clear()
@@ -97,3 +97,12 @@ def tabla_H():
     tabla.add_row("Tipo",*tasa_tipo,end_section=True,style="bold magenta")
     tabla.add_row("Valor",*[str(tasa.valor(v)) for v in tasa_tipo],end_section=True,style="bold red3")
     console.print(tabla)
+    
+def printHeader():
+    console = Console()
+    ascii_banner = """ 
+ ____ ____  _ ____    ____ ____ ____ _ ____ ___ ____ ____ ___  ____ ____ ____ 
+ |    |__|  | |__|    |__/ |___ | __ | [__   |  |__/ |__| |  \\ |  | |__/ |__| 
+ |___ |  | _| |  |    |  \\ |___ |__] | ___]  |  |  \\ |  | |__/ |__| |  \\ |  | 
+    """
+    console.print(ascii_banner,style="bold salmon1")

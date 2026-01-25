@@ -32,7 +32,7 @@ class Tasa:
             float: Valor actual de la moneda
         """
         if denominacion not in Tasa.__tasa_Cambio.keys():
-            raise DenominacionInvalida()
+            raise DenominationInvalida()
         return Tasa.__tasa_Cambio[denominacion]
     
     
@@ -46,10 +46,10 @@ class Tasa:
 
     def __getattr__(self, name)-> str:
         if name not in self.denominaciones():
-            raise DenominacionInvalida
+            raise DenominationInvalida
         return str(name)
 
 
-class DenominacionInvalida(Exception):
+class DenominationInvalida(Exception):
     def __init__(self):
-        super().__init__(f"Denominación de moneda no válida")
+        super().__init__(f"Denominación de moneda inválida")

@@ -7,7 +7,7 @@ LLeva y procesa los Cobros
 class Cobro:
     
     @staticmethod
-    def diferancia_deuda_monto(deuda: Monto, monto : Monto) -> dict[str , Monto]:
+    def diferencia_deuda_monto(deuda: Monto, monto : Monto) -> dict[str , Monto]:
         """### Calcula la diferencia entre el deuda requerido y el monto entregado,
     devolviendo el nuevo deuda pendiente y el sobrante en CUP.
 

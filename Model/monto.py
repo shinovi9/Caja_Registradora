@@ -14,12 +14,12 @@ class Monto:
         if denominacion in tasa.denominaciones():
             self.__denominacion = denominacion 
         else:
-            raise DenominacionInvalida
+            raise DenominationInvalida
 
     def __getattr__(self, name):
         tasa = Tasa()
         if name not in tasa.denominaciones():
-            raise DenominacionInvalida
+            raise DenominationInvalida
         return self.__conversionA(name)
     
     def __conversionA(self, denominacion : str) -> float:

@@ -19,7 +19,7 @@ class Sumadora:
             monto_tipo = tasa_tipo[monto_tipo] if monto_tipo < len(tasa_tipo) else tasa_tipo[-1]
             monto: Monto = Monto(monto_valor, monto_tipo)
             # calcular y muestra el nuevo deuda y monto sobrante
-            resultado = Cobro.diferancia_deuda_monto(deuda,monto)
+            resultado = Cobro.diferencia_deuda_monto(deuda,monto)
             print("deuda : " + resultado["new_deuda"].__str__())
             print("monto : " + resultado["monto_Sobrante"].__str__())
             
