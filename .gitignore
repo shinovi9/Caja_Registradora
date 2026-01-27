@@ -15,6 +15,7 @@ __pycache__/
 *.ini
 *.cfg
 *.local
+*.e.txt
 
 # Logs y temporales
 *.log

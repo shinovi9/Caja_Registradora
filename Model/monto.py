@@ -2,17 +2,17 @@
 from Model.tasa import *
 
 class Monto:
-    def __init__(self, cantidad : float, denominacion : str = "CUP"):
-        """### Inicializacion del Monto
+    def __init__(self, cantidad : float, denomination : str = "CUP"):
+        """### Constructor Monto
         Args:
             cantidad (float): Tamaño del Monto
-            denominacion (str): denominacion de Monto . Ejemplo(CUP,USD,...)
+            denomination (str): denomination de Monto . Ejemplo(CUP,USD,...)
         """
         tasa = Tasa()
         self.__cantidad = cantidad if cantidad >= 0.0 else 0.0
         
-        if denominacion in tasa.denominaciones():
-            self.__denominacion = denominacion 
+        if denomination in tasa.denominaciones():
+            self.__denomination = denomination 
         else:
             raise DenominationInvalida
 
@@ -22,16 +22,16 @@ class Monto:
             raise DenominationInvalida
         return self.__conversionA(name)
     
-    def __conversionA(self, denominacion : str) -> float:
+    def __conversionA(self, denomination : str) -> float:
         """### Convierte la cantidad del monto, a la del monto deseado
         Args:
-            denominacion (str): Moneda que se desea convertir
+            denomination (str): Moneda que se desea convertir
         Returns:
             float: cantidad del Monto convertida
         """
         tasa = Tasa()
-        tasa_origen = tasa.valor(self.__denominacion)
-        tasa_destino = tasa.valor(denominacion)       
+        tasa_origen = tasa.valor(self.__denomination)
+        tasa_destino = tasa.valor(denomination)       
         # convertir a la base
         if self.__cantidad == 0:
             return 0.0
@@ -48,13 +48,13 @@ class Monto:
         return float(self.__cantidad)
     
     @property
-    def denominacion(self) -> str:
-        """### Obtener el denominacion del monto
+    def denomination(self) -> str:
+        """### Obtener el denomination del monto
         Returns:
-            str: el denominacion de moneda
+            str: el denomination de moneda
         """
-        return self.__denominacion
+        return self.__denomination
     
     def __str__(self)-> str:
-        return f"{self.__cantidad} {self.__denominacion}" 
+        return f"{self.__cantidad} {self.__denomination}" 
     

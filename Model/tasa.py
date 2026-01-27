@@ -4,7 +4,7 @@ import json
 
 class Tasa:
     """Gestiona el Acceso de las Tasa de cambio"""
-    __tasa_Cambio : dict
+    __tasa_Cambio : dict[str,float]
     @staticmethod
     def __cargar_Data() -> dict:
         """## Carga de la Base de Datos las Tasas de cambio 
@@ -21,25 +21,30 @@ class Tasa:
         return json.loads(ruta.read_text(encoding="utf-8"))
     
     def __init__(self):
-        Tasa.__tasa_Cambio : dict = Tasa.__cargar_Data()
+        """### Carga las tasa de cambio en el atributo de clase 
+        ```
+            Tasa.__tasa_Cambio : dict[str,float] 
+        ```
+        """
+        Tasa.__tasa_Cambio = Tasa.__cargar_Data()
 
     
-    def valor(self,denominacion : str) -> float:
-        """## Obtener el Valor actual de una moneda en la Tasa de canbio
+    def valor(self,denomination : str) -> float:
+        """## Obtener el Valor actual de una moneda en la Tasa de cambio
         Args:
-            denominacion (str): denominacion de moneda
+            denomination (str): denomination de moneda
         Returns:
             float: Valor actual de la moneda
         """
-        if denominacion not in Tasa.__tasa_Cambio.keys():
+        if denomination not in Tasa.__tasa_Cambio.keys():
             raise DenominationInvalida()
-        return Tasa.__tasa_Cambio[denominacion]
+        return Tasa.__tasa_Cambio[denomination]
     
     
     def denominaciones(self) -> tuple[str]:
-        """### Obtener los denominacions de Monedas disponibles en la tasa de Cambio
+        """### Obtener las denominaciones de Monedas disponibles en la tasa de Cambio
         Returns:
-            tuple: Todas la monedas disponibles
+            tuple: Todas la denominaciones disponibles
         """
         return tuple(Tasa.__tasa_Cambio.keys())
     

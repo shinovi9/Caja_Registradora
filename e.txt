@@ -1,0 +1,51 @@
+
+Nombre de la plantilla                                     Nombre corto                  Idioma      Etiquetas
+---------------------------------------------------------  ----------------------------  ----------  -----------------------------------------
+API web ASP.NET Core (native AOT)                          webapiaot                     [C#]        Web/Web API/API/Service
+Aplicación de consola                                      console                       [C#],F#,VB  Common/Console
+Aplicación de Windows Forms                                winforms                      [C#],VB     Common/WinForms
+Aplicación independiente WebAssembly de Blazor             blazorwasm                    [C#]        Web/Blazor/WebAssembly/PWA
+Aplicación web Blazor                                      blazor                        [C#]        Web/Blazor/WebAssembly
+Aplicación web de ASP.NET Core (Modelo-Vista-Controlador)  mvc                           [C#],F#     Web/MVC
+Aplicación WPF                                             wpf                           [C#],VB     Common/WPF
+Archivo de búfer de protocolo                              proto                                     Web/gRPC
+Archivo de la solución                                     sln,solution                              Solution
+Archivo de manifiesto de la herramienta local de dotnet    tool-manifest                             Config
+Archivo Directory.Build.props de MSBuild                   buildprops                                MSBuild/props
+Archivo Directory.Build.targets de MSBuild                 buildtargets                              MSBuild/props
+Archivo Directory.Packages.props de MSBuild                packagesprops                             MSBuild/packages/props/CPM
+Archivo dotnet gitattributes                               gitattributes,.gitattributes              Config
+Archivo EditorConfig                                       editorconfig,.editorconfig                Config
+archivo gitignore de dotnet                                gitignore,.gitignore                      Config
+archivo global.json                                        globaljson,global.json                    Config
+ASP.NET Core vacío                                         web                           [C#],F#     Web/Empty
+ASP.NET Core Web API                                       webapi                        [C#],F#     Web/WebAPI/Web API/API/Service
+ASP.NET Core Web App (Razor Pages)                         webapp,razor                  [C#]        Web/MVC/Razor Pages
+ASP.NET Core with Angular                                  angular                       [C#]        Web/MVC/SPA
+ASP.NET Core with React.js                                 react                         [C#]        Web/MVC/SPA
+Biblioteca de clases                                       classlib                      [C#],F#,VB  Common/Library
+Biblioteca de clases de Razor                              razorclasslib                 [C#]        Web/Razor/Library
+Biblioteca de clases de Windows Forms                      winformslib                   [C#],VB     Common/WinForms
+Biblioteca de clases de WPF                                wpflib                        [C#],VB     Common/WPF
+Biblioteca de control personalizada de WPF                 wpfcustomcontrollib           [C#],VB     Common/WPF
+Biblioteca de controles de usuario de WPF                  wpfusercontrollib             [C#],VB     Common/WPF
+Biblioteca de controles de Windows Forms                   winformscontrollib            [C#],VB     Common/WinForms
+Blazor Server App                                          blazorserver                  [C#]        Web/Blazor
+Clase de prueba de MSTest                                  mstest-class                  [C#],F#,VB  Test/MSTest
+Componente Razor                                           razorcomponent                [C#]        Web/ASP.NET
+Configuración de NuGet                                     nugetconfig,nuget.config                  Config
+Configuración web                                          webconfig                                 Config
+Controlador de API                                         apicontroller                 [C#]        Web/ASP.NET
+Controlador MVC                                            mvccontroller                 [C#]        Web/ASP.NET
+Elemento de prueba NUnit                                   nunit-test                    [C#],F#,VB  Test/NUnit
+MVC de ViewStart                                           viewstart                     [C#]        Web/ASP.NET
+MVC ViewImports                                            viewimports                   [C#]        Web/ASP.NET
+Proyecto de prueba de MSTest                               mstest                        [C#],F#,VB  Test/MSTest/Desktop/Web
+Proyecto de prueba de MSTest Playwright                    mstest-playwright             [C#]        Test/MSTest/Playwright/Desktop/Web
+Proyecto de prueba de NUnit                                nunit                         [C#],F#,VB  Test/NUnit/Desktop/Web
+Proyecto de prueba de NUnit Playwright                     nunit-playwright              [C#]        Test/NUnit/Playwright/Desktop/Web
+Proyecto de prueba de xUnit                                xunit                         [C#],F#,VB  Test/xUnit/Desktop/Web
+Página de Razor                                            page                          [C#]        Web/ASP.NET
+Servicio gRPC de ASP.NET Core                              grpc                          [C#]        Web/gRPC/API/Service
+Vista de Razor                                             view                          [C#]        Web/ASP.NET
+Worker Service                                             worker                        [C#],F#     Common/Worker/Web

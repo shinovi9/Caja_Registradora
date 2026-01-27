@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 from Model.sumadora import Sumadora
-
-import view
+from rich.prompt import Prompt
+from View.view import *
 
 while True:
-    view.printHeader()
-    #view.tabla()
-    view.tabla_H()
+    refrescar()
+    printHeader()
+    tabla_H()
     Sumadora.main()
-    e = input("Nueva Operación(y/n); default(y).\n>_").lower()
+    e = Prompt.ask("Nueva Operación." ,choices=["y","n"]).lower()
     if e == "n": break
-    view.refrescar()

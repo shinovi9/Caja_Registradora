@@ -2,7 +2,7 @@
 from Model.cobro import Cobro
 from Model.monto import Monto
 from Model.tasa import *
-import view
+import View.view as view
 
 class Sumadora:
     @staticmethod
@@ -18,10 +18,10 @@ class Sumadora:
             monto_valor, monto_tipo = view.input_("Ingrese el Monto a Pagar","Cual es el tipo de moneda del Monto")
             monto_tipo = tasa_tipo[monto_tipo] if monto_tipo < len(tasa_tipo) else tasa_tipo[-1]
             monto: Monto = Monto(monto_valor, monto_tipo)
-            # calcular y muestra el nuevo deuda y monto sobrante
+            # calcular y mostrar el nuevo deuda y monto sobrante
             resultado = Cobro.diferencia_deuda_monto(deuda,monto)
-            print("deuda : " + resultado["new_deuda"].__str__())
-            print("monto : " + resultado["monto_Sobrante"].__str__())
+            view.printMonto("Deuda ",resultado["new_deuda"].__str__())
+            view.printMonto("Monto ",resultado["monto_Sobrante"].__str__())
             
             deuda = resultado["new_deuda"]
             
